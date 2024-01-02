@@ -1,6 +1,6 @@
 import './App.css'
-import Counter from './component/Counter'
-import ItemsDisplay from './component/ItemsDisplay'
+import Counter from './component/CounterApp/Counter'
+import ItemsDisplay from './component/ItemDisplayApp/ItemsDisplay'
 import NoteAppFunctional from './component/NotesApp/NoteApp'
 import NotesAppClass from './component/NotesAppComponent/NotesApp'
 function App() {
