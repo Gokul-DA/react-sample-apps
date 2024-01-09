@@ -3,32 +3,15 @@ import { MdDelete } from 'react-icons/md'
 import { IoPersonAddOutline } from 'react-icons/io5'
 import { FaRegEdit, FaSearch } from 'react-icons/fa'
 import PersonForm from './PersonForm'
+import axios from 'axios'
+
 class PersonList extends Component {
   constructor(props) {
     super(props)
   }
 
   state = {
-    personDetails: [
-      {
-        id: 1,
-        firstName: 'Gokul',
-        lastName: 'S',
-        address: 'ABC',
-      },
-      {
-        id: 2,
-        firstName: 'Deepan',
-        lastName: 'K',
-        address: 'DEF',
-      },
-      {
-        id: 3,
-        firstName: 'Tharun',
-        lastName: 'D',
-        address: 'XYZ',
-      },
-    ],
+    personDetails: [],
     addPersonClicked: false,
     editRecordClicked: false,
     selectedRecordToEdit: 0,
@@ -38,8 +21,23 @@ class PersonList extends Component {
   }
 
   componentDidMount() {
-    console.log('Called didMount')
-    this.setState({ filteredPersonDetails: this.state.personDetails })
+    console.log('mounted')
+    this.setPerson()
+  }
+
+  setPerson = () => {
+    axios
+      .get('http://localhost:3000/person')
+      .then((res) => {
+        this.setState({
+          filteredPersonDetails: res.data,
+          personDetails: res.data,
+        })
+        console.log(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   addBtnHandler = () => {
@@ -49,33 +47,78 @@ class PersonList extends Component {
   addPerson = (event) => {
     event.preventDefault()
     let person = {
-      id: this.getNextId(),
+      id: this.getNextId().toString(),
       firstName: event.target.firstName.value,
       lastName: event.target.lastName.value,
       address: event.target.address.value,
     }
-    this.setState(
-      {
-        personDetails: [...this.state.personDetails, person],
-        addPersonClicked: !this.state.addPersonClicked,
-      },
-      () => {
-        this.filterData()
-      }
-    )
+
+    axios
+      .post('http://localhost:3000/person', person)
+      .then((res) => {
+        console.log('postdata', res.data)
+        this.setState(
+          {
+            personDetails: [...this.state.personDetails, person],
+            addPersonClicked: !this.state.addPersonClicked,
+          },
+          () => {
+            this.filterData()
+          }
+        )
+      })
+      .catch((err) => {
+        console.log('error happened while posting: ', err)
+      })
   }
 
   removePerson = (id) => {
-    this.setState(
-      {
-        personDetails: [
-          ...this.state.personDetails.filter((person) => {
-            return person.id !== id
-          }),
-        ],
-      },
-      () => this.filterData()
-    )
+    console.log('id to be deleted :', id)
+    axios
+      .delete('http://localhost:3000/person/' + id)
+      .then((res) => {
+        console.log('Deleted row: ', res.data.id)
+        this.setState(
+          {
+            personDetails: [
+              ...this.state.personDetails.filter((person) => {
+                return person.id !== res.data.id
+              }),
+            ],
+            // filteredPersonDetails: this.state.personDetails,
+          },
+          () => {
+            this.filterData()
+          }
+        )
+      })
+      .catch((err) => {
+        console.log('error while deleting: ', err)
+      })
+
+    // this.setState(
+    //   {
+    //     filteredPersonDetails: [this.state.personDetails],
+    //   },
+    //   () => {
+    //     console.log('actual length :::', this.state.personDetails.length)
+    //     console.log(
+    //       'filter length :::',
+    //       this.state.filteredPersonDetails.length
+    //     )
+    //   }
+    // )
+
+    // this.setState(
+    //   {
+    //     personDetails: [
+    //       ...this.state.personDetails.filter((person) => {
+    //         return person.id !== id
+    //       }),
+    //     ],
+    //   },
+    //   () => this.filterData()
+    // )
   }
 
   getNextId() {
@@ -83,7 +126,7 @@ class PersonList extends Component {
       (max, person) => (person.id > max ? person.id : max),
       -Infinity
     )
-    return maxId + 1
+    return +maxId + 1
   }
 
   handleEditRecord = (id) => {
@@ -96,60 +139,48 @@ class PersonList extends Component {
 
   updatePerson = (event) => {
     event.preventDefault()
+    console.log('insdie udpate')
     let updatedPerson = {
-      id: this.state.selectedRecordToEdit,
+      id: this.state.selectedRecordToEdit.toString(),
       firstName: event.target.firstName.value,
       lastName: event.target.lastName.value,
       address: event.target.address.value,
     }
 
-    // let indexToUpdate = this.state.personDetails.findIndex(
-    //   (person) => person.id === updatedPerson.id
-    // )
-
-    // if (indexToUpdate !== -1) {
-    //   this.setState({
-    //     personDetails: [
-    //       this.state.personDetails.map((person, index) =>
-    //         index === indexToUpdate ? { ...person, ...updatedPerson } : person
-    //       ),
-    //     ],
-    //     editRecordClicked: !this.state.editRecordClicked,
-    //   })
-    // } else {
-    //   console.log('Person not found for updating')
-    // }
-
-    this.setState(
-      (prevState) => {
-        const updatedPersonDetails = prevState.personDetails.map((person) =>
-          person.id === updatedPerson.id
+    axios
+      .put('http://localhost:3000/person/' + updatedPerson.id, updatedPerson)
+      .then((res) => {
+        let upatedPersonDetails = this.state.personDetails.map((person) => {
+          return person.id === this.updatePerson.id
             ? { ...person, ...updatedPerson }
             : person
+        })
+        this.setState(
+          {
+            personDetails: upatedPersonDetails,
+            editRecordClicked: !this.state.editRecordClicked,
+          },
+          () => this.filterData()
         )
-
-        return {
-          personDetails: updatedPersonDetails,
-          editRecordClicked: !this.state.editRecordClicked,
-        }
-      },
-      () => this.filterData()
-    )
-
-    // this.setState({
-    //   personDetails: [
-    //     this.state.personDetails.map((person) => {
-    //       console.log(
-    //         'person.id === updatedPerson.id',
-    //         person.id === updatedPerson.id
-    //       )
-    //       return person.id === updatedPerson.id
+      })
+      .catch((err) => {
+        console.log('error occured while put/editing: ', err)
+      })
+    // this.setState(
+    //   (prevState) => {
+    //     const updatedPersonDetails = prevState.personDetails.map((person) =>
+    //       person.id === updatedPerson.id
     //         ? { ...person, ...updatedPerson }
     //         : person
-    //     }),
-    //   ],
-    //   editRecordClicked: !this.state.editRecordClicked,
-    // })
+    //     )
+
+    //     return {
+    //       personDetails: updatedPersonDetails,
+    //       editRecordClicked: !this.state.editRecordClicked,
+    //     }
+    //   },
+    //   () => this.filterData()
+    // )
   }
 
   searchButtonHandler = (event) => {
