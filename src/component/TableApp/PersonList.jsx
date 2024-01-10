@@ -150,15 +150,17 @@ class PersonList extends Component {
     axios
       .put('http://localhost:3000/person/' + updatedPerson.id, updatedPerson)
       .then((res) => {
-        let upatedPersonDetails = this.state.personDetails.map((person) => {
-          return person.id === this.updatePerson.id
-            ? { ...person, ...updatedPerson }
-            : person
-        })
         this.setState(
-          {
-            personDetails: upatedPersonDetails,
-            editRecordClicked: !this.state.editRecordClicked,
+          (prevState) => {
+            const updatedPersonDetails = prevState.personDetails.map((person) =>
+              person.id === updatedPerson.id
+                ? { ...person, ...updatedPerson }
+                : person
+            )
+            return {
+              personDetails: updatedPersonDetails,
+              editRecordClicked: !this.state.editRecordClicked,
+            }
           },
           () => this.filterData()
         )
@@ -166,21 +168,6 @@ class PersonList extends Component {
       .catch((err) => {
         console.log('error occured while put/editing: ', err)
       })
-    // this.setState(
-    //   (prevState) => {
-    //     const updatedPersonDetails = prevState.personDetails.map((person) =>
-    //       person.id === updatedPerson.id
-    //         ? { ...person, ...updatedPerson }
-    //         : person
-    //     )
-
-    //     return {
-    //       personDetails: updatedPersonDetails,
-    //       editRecordClicked: !this.state.editRecordClicked,
-    //     }
-    //   },
-    //   () => this.filterData()
-    // )
   }
 
   searchButtonHandler = (event) => {

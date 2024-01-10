@@ -3,20 +3,14 @@
     {
       "id": "1",
       "firstName": "Gokul",
-      "lastName": "S",
+      "lastName": "Sasdasd",
       "address": "ABC"
     },
     {
       "id": "2",
-      "firstName": "Deepan",
-      "lastName": "K",
-      "address": "DEF"
-    },
-    {
-      "id": "3",
-      "firstName": "Tharunasdasdasd",
-      "lastName": "D",
-      "address": "XYZ"
+      "firstName": "Deepanasdasd",
+      "lastName": "Kasdasdasd",
+      "address": "DEFasdasd"
     }
   ]
 }
