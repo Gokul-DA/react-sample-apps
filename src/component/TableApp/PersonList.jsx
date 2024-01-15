@@ -4,7 +4,7 @@ import { IoPersonAddOutline } from 'react-icons/io5'
 import { FaRegEdit, FaSearch } from 'react-icons/fa'
 import PersonForm from './PersonForm'
 import axios from 'axios'
-
+import { Link, Outlet } from 'react-router-dom'
 class PersonList extends Component {
   constructor(props) {
     super(props)
@@ -95,30 +95,6 @@ class PersonList extends Component {
       .catch((err) => {
         console.log('error while deleting: ', err)
       })
-
-    // this.setState(
-    //   {
-    //     filteredPersonDetails: [this.state.personDetails],
-    //   },
-    //   () => {
-    //     console.log('actual length :::', this.state.personDetails.length)
-    //     console.log(
-    //       'filter length :::',
-    //       this.state.filteredPersonDetails.length
-    //     )
-    //   }
-    // )
-
-    // this.setState(
-    //   {
-    //     personDetails: [
-    //       ...this.state.personDetails.filter((person) => {
-    //         return person.id !== id
-    //       }),
-    //     ],
-    //   },
-    //   () => this.filterData()
-    // )
   }
 
   getNextId() {
@@ -192,9 +168,23 @@ class PersonList extends Component {
     this.setState({ editRecordClicked: !this.state.editRecordClicked })
   }
 
+  rowClickHandler = (id) => {
+    this.props.setselectedPerson(this.state.personDetails.slice(id - 1, id)[0])
+    this.props.navigate('/person/' + id)
+    console.log('Row Clicked: ', id)
+  }
   render() {
     return (
       <>
+        <nav>
+          <Link className='navbar' index to='profile'>
+            Profile
+          </Link>
+          <Link className='navbar' to='contactDetails'>
+            Contact Details
+          </Link>
+        </nav>
+        <Outlet></Outlet>
         <br></br>
         <button
           onClick={this.addBtnHandler}
@@ -239,7 +229,10 @@ class PersonList extends Component {
           <tbody>
             {this.state.filteredPersonDetails.map((person) => {
               return (
-                <tr key={person.id}>
+                <tr
+                  onClick={() => this.rowClickHandler(person.id)}
+                  key={person.id}
+                >
                   <td>{person.firstName}</td>
                   <td>{person.lastName}</td>
                   <td>{person.address}</td>
