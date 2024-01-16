@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Notes from './Notes'
 import Header from './Header'
 import Action from './Action'
 import Note from './Note'
 
+export const notesContext = React.createContext()
+
 function NoteApp() {
   const [notes, setNotes] = useState([])
+
   const removeAll = () => {
     console.log('removeAll notes:' + notes)
     setNotes([])
@@ -25,13 +28,14 @@ function NoteApp() {
     )
   }
 
-  console.log('add notes notes:' + JSON.stringify(notes))
-
   return (
     <>
+      {console.log('notes: ', notes)}
       <h1>Java Sample Approach </h1>
       <Header />
-      <Notes notes={notes} removeNote={removeNote} />
+      <notesContext.Provider value={notes}>
+        <Notes notes={notes} removeNote={removeNote} />
+      </notesContext.Provider>
       {/* <Note notes={notes} removeNote={removeNote} /> */}
       <Action addNote={addNotes} removeAll={removeAll} />
       <hr></hr>
