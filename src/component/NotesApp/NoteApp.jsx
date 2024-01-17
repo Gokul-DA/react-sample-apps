@@ -1,8 +1,7 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import Notes from './Notes'
 import Header from './Header'
 import Action from './Action'
-import Note from './Note'
 
 export const notesContext = React.createContext()
 

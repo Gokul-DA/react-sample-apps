@@ -2,21 +2,13 @@ import './App.css'
 import Counter from './component/CounterApp/Counter'
 import ItemsDisplay from './component/ItemDisplayApp/ItemsDisplay'
 import NoteAppFunctional from './component/NotesApp/NoteApp'
-import NotesAppClass from './component/NotesAppComponent/NotesApp'
-import PersonList from './component/TableApp/PersonList'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import {
-  Link,
-  NavLink,
-  Route,
-  Router,
-  Routes,
-  useNavigate,
-} from 'react-router-dom'
+import { Link, NavLink, Route, Routes, useNavigate } from 'react-router-dom'
 import Home from './component/Home'
 import NotFound from './component/NotFound'
 import PersonDetails from './component/TableApp/PersonDetails'
 import { useState, useEffect } from 'react'
+import PersonListF from './component/TableApp/PersonListF'
 function App() {
   const navigate = useNavigate()
   const [selectedPerson, setselectedPerson] = useState({})
@@ -61,12 +53,6 @@ function App() {
           </ul>
         </div>
       </nav>
-      {/* <Counter />
-      <ItemsDisplay />
-      <NoteAppFunctional></NoteAppFunctional>
-      <NotesAppClass></NotesAppClass> */}
-
-      {/* <PersonList /> */}
 
       <Routes>
         {/* <Route path='/' element={<>{navigate('/home')}</>}></Route> */}
@@ -77,7 +63,7 @@ function App() {
         <Route
           path='/person'
           element={
-            <PersonList
+            <PersonListF
               navigate={navigate}
               setselectedPerson={setselectedPerson}
             />

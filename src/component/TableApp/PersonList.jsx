@@ -5,11 +5,8 @@ import { FaRegEdit, FaSearch } from 'react-icons/fa'
 import PersonForm from './PersonForm'
 import axios from 'axios'
 import { Link, Outlet } from 'react-router-dom'
-class PersonList extends Component {
-  constructor(props) {
-    super(props)
-  }
 
+class PersonList extends Component {
   state = {
     personDetails: [],
     addPersonClicked: false,
