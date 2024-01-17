@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
 import Header from './Header'
-import Note from './Note'
 import Action from './Action'
 import Notes from './Notes'
 class NotesApp extends Component {
-  constructor(props) {
-    super(props)
-  }
   state = { notes: [] }
 
   addNotes = (params) => {
