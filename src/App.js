@@ -14,7 +14,7 @@ function App() {
   const [selectedPerson, setselectedPerson] = useState({})
   useEffect(() => {
     // Redirect to the home page
-    navigate('/home')
+    // navigate('/home')
   }, [])
   return (
     <>

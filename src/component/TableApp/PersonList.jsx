@@ -42,7 +42,7 @@ class PersonList extends Component {
   }
 
   addPerson = (event) => {
-    event.preventDefault()
+    // event.preventDefault()
     let person = {
       id: this.getNextId().toString(),
       firstName: event.target.firstName.value,
@@ -111,7 +111,7 @@ class PersonList extends Component {
   }
 
   updatePerson = (event) => {
-    event.preventDefault()
+    // event.preventDefault()
     console.log('insdie udpate')
     let updatedPerson = {
       id: this.state.selectedRecordToEdit.toString(),

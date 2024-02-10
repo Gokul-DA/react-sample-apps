@@ -33,13 +33,12 @@ const PersonListF = ({ setselectedPerson, navigate }) => {
     setAddPersonClicked(!addPersonClicked)
   }
 
-  const addPerson = (event) => {
-    event.preventDefault()
+  const addPerson = (data) => {
     const person = {
       id: getNextId().toString(),
-      firstName: event.target.firstName.value,
-      lastName: event.target.lastName.value,
-      address: event.target.address.value,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      address: data.address,
     }
 
     dispatch(addPersonAction(person))
@@ -66,13 +65,12 @@ const PersonListF = ({ setselectedPerson, navigate }) => {
     setEditedPerson(personDetails.find((person) => person.id === id))
   }
 
-  const updatePerson = (event) => {
-    event.preventDefault()
+  const updatePerson = (data) => {
     const updatedPerson = {
       id: selectedRecordToEdit.toString(),
-      firstName: event.target.firstName.value,
-      lastName: event.target.lastName.value,
-      address: event.target.address.value,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      address: data.address,
     }
 
     dispatch(updatePersonAction(updatedPerson))
