@@ -1,9 +1,6 @@
-import React, { Component, setState } from 'react'
+import React, { Component } from 'react'
 
 class Note extends Component {
-  constructor(props) {
-    super(props)
-  }
   state = {}
 
   render() {
